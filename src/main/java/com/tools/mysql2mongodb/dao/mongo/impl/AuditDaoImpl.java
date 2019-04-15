@@ -30,4 +30,9 @@ public class AuditDaoImpl implements AuditNowDao {
     public List<AuditNowModel> findAll() {
         return mongoTemplate.findAll(AuditNowModel.class);
     }
+
+    @Override
+    public void instertAuditNowModels(List<AuditNowModel> auditNowModels) {
+        mongoTemplate.insertAll(auditNowModels);
+    }
 }

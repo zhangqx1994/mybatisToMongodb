@@ -13,5 +13,6 @@ public interface AuditNowDao {
      * @return List<AuditNowModel>
      */
     List<AuditNowModel> findAll();
+    void instertAuditNowModels(List<AuditNowModel> auditNowModels);
 
 }

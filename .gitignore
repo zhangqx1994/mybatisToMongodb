@@ -37,3 +37,5 @@ hs_err_pid*
 将删除 target/generated-sources/
 /.idea/
 /target/
+/mysql-mongodb.iml
+/mybatis_mongodb.iml
