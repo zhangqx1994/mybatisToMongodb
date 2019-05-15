@@ -1,6 +1,10 @@
 package com.tools.mysql2mongodb.entity;
 
 
+import com.tools.mysql2mongodb.common.Definiton;
+import com.tools.mysql2mongodb.common.LanguageType;
+import com.tools.mysql2mongodb.common.MaterialType;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -209,6 +213,42 @@ public class Program implements Serializable
 
 	@Column(name = "PRODUCT_ID")
 	private Long productId;
+
+	@Transient
+	private String materialType;
+	@Transient
+	private String language;
+	@Transient
+	private String definition;
+
+	public void convert(){
+		setMaterialType();
+		setLanguage();
+		setDefinition();
+	}
+	public String getMaterialType() {
+		return materialType;
+	}
+
+	private void setMaterialType() {
+		this.materialType = MaterialType.getMaterialType().get(this.materialTypeId);
+	}
+
+	public String getLanguage() {
+		return language;
+	}
+
+	private void setLanguage() {
+		this.language = LanguageType.getLanguage().get(this.languageId);
+	}
+
+	public String getDefinition() {
+		return definition;
+	}
+
+	private void setDefinition() {
+		this.definition = Definiton.getDefiniton().get(this.definitionCode);
+	}
 
 	public static long getSerialVersionUID() {
 		return serialVersionUID;

@@ -11,4 +11,6 @@ import java.util.List;
 public interface ProgramSeriesRelRepository extends JpaRepository<ProgramSeriesRel,Long> {
 
     List<ProgramSeriesRel> findProgramSeriesRelsByProgramSeriesId(Long programSeriesId);
+
+    ProgramSeriesRel findByProgramId(Long programId);
 }

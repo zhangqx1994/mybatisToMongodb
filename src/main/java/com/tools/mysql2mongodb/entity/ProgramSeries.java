@@ -1,6 +1,10 @@
 package com.tools.mysql2mongodb.entity;
 
 
+import com.tools.mysql2mongodb.common.Definiton;
+import com.tools.mysql2mongodb.common.LanguageType;
+import com.tools.mysql2mongodb.common.MaterialType;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -382,8 +386,51 @@ public class ProgramSeries implements Serializable
     private String oldRelProgramIds;
     
     @Transient
-    private List<Program> programList = new ArrayList<Program>();
-    
+    private List<Long> programList;
+
+    public List<Long> getProgramList() {
+        return programList;
+    }
+
+    public void setProgramList(List<Long> programList) {
+        this.programList = programList;
+    }
+
+    @Transient
+    private String materialType;
+    @Transient
+    private String language;
+    @Transient
+    private String definition;
+
+    public void convert(){
+        setMaterialType();
+        setLanguage();
+        setDefinition();
+    }
+    public String getMaterialType() {
+        return materialType;
+    }
+
+    private void setMaterialType() {
+        this.materialType = MaterialType.getMaterialType().get(this.programTypeId);
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    private void setLanguage() {
+        language = LanguageType.getLanguage().get(this.languageId);
+    }
+
+    public String getDefinition() {
+        return definition;
+    }
+
+    private void setDefinition() {
+        this.definition = Definiton.getDefiniton().get(this.definitionCode);
+    }
     
     public ProgramSeries()
     {
@@ -1354,16 +1401,6 @@ public class ProgramSeries implements Serializable
     public String getPublishPlatformIdsForQuery()
     {
         return publishPlatformIdsForQuery;
-    }
-    
-    public List<Program> getProgramList()
-    {
-        return programList;
-    }
-    
-    public void setProgramList(List<Program> programList)
-    {
-        this.programList = programList;
     }
     
 
