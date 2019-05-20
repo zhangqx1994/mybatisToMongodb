@@ -11,9 +11,9 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-@Entity
-@Table(name = "cms_program_series")
-public class ProgramSeries implements Serializable
+//@Entity
+//@Table(name = "cms_program_series")
+public class ProgramSeriesTencent implements Serializable
 {
 
     private static final long serialVersionUID = 8587689177279529711L;
@@ -24,7 +24,8 @@ public class ProgramSeries implements Serializable
     private Long id;
 
     // 节目集名称
-    private String programSeriesName;
+    @Column(name="PROGRAM_SERIES_NAME")
+    private String title;
 
     // 节目集状态
     private String status;
@@ -36,10 +37,12 @@ public class ProgramSeries implements Serializable
     private String programSeriesAlias;
 
     // 节目集英文名
-    private String programSeriesEnName;
+    @Column(name ="PROGRAM_SERIES_EN_NAME")
+    private String title_en;
 
     // 主海报地址
-    private String poster;
+    @Column(name = "POSTER")
+    private String new_pic_hz;
 
     // 小海报地址
     private String smallPosterAddr;
@@ -48,11 +51,12 @@ public class ProgramSeries implements Serializable
     private String bigPosterAddr;
 
     // 节目集简介
-    private String programSeriesDesc;
+    @Column(name ="PROGRAM_SERIES_DESC")
+    private String description;
 
     // 分类
     @Column(name = "PROGRAM_TYPE_ID")
-    private Integer programTypeId;
+    private Integer type;
 
     // 分类名（添加，修改节目集页面）
     @Transient
@@ -71,7 +75,8 @@ public class ProgramSeries implements Serializable
     private String programContentType;
 
     // 标签
-    private String tag;
+    @Column(name = "TAG")
+    private String tagArray;
 
     // 清晰度
     private String definitionCode;
@@ -89,7 +94,8 @@ public class ProgramSeries implements Serializable
     private String leadingRolePinyin;
 
     // 年份
-    private String years;
+    @Column(name = "YEARS")
+    private String year;
 
     // 年份（添加，修改节目集页面）
     @Transient
@@ -138,10 +144,12 @@ public class ProgramSeries implements Serializable
     private Date statusTime;
 
     // 最后更新时间
-    private Date lastModifyDate;
+    @Column(name = "LAST_MODIFY_DATE")
+    private Date modify_time;
 
     // 创建时间
-    private Date createDate;
+    @Column(name = "CREATE_DATE")
+    private Date create_time;
 
     // 是否3D 0--否|1--是
     private Integer is3D;
@@ -162,7 +170,8 @@ public class ProgramSeries implements Serializable
     private String dataProvider;
 
     // 外部数据标识
-    private String outSourceId;
+    @Column(name = "OUT_SOURCE_ID")
+    private String cover_id;
 
     // 地区
     private String zone;
@@ -385,975 +394,1006 @@ public class ProgramSeries implements Serializable
     private String oldRelProgramIds;
 
     @Transient
-    private List<Long> programList;
+    private List<Long> video_ids;
 
-    public List<Long> getProgramList() {
-        return programList;
+    public List<Long> getVideo_ids() {
+        return video_ids;
     }
 
-    public void setProgramList(List<Long> programList) {
-        this.programList = programList;
+    public void setVideo_ids(List<Long> video_ids) {
+        this.video_ids = video_ids;
     }
 
     @Transient
-    private String materialType;
+    private String type_name;
     @Transient
-    private String language;
+    private String langue;
     @Transient
-    private String definition;
+    private String[] resolution_list;
+    @Transient
+    private Integer priority = null;
+    @Transient
+    private String[] tag;
+    @Transient
+    private String[] leading_actor;
+    @Transient
+    private String copyright = "未来电视";
+
+
+    public String[] getLeading_actor() {
+        return leading_actor;
+    }
+
+    public void setLeading_actor() {
+        if(this.leadingRole!=null){
+            this.leading_actor = this.leadingRole.split("\\|");
+        }
+    }
+
+    public String[] getTag() {
+        return tag;
+    }
+
+    public void setTag() {
+        if (this.tagArray!=null){
+            this.tag = tagArray.split(" ");
+        }
+    }
 
     public void convert(){
         setMaterialType();
         setLanguage();
         setDefinition();
+        setTag();
+        setLeading_actor();
     }
-    public String getMaterialType() {
-        return materialType;
+    public String getType_name() {
+        return type_name;
     }
 
     private void setMaterialType() {
-        this.materialType = MaterialType.getMaterialType().get(this.programTypeId);
+        this.type_name = MaterialType.getMaterialType().get(this.type);
     }
 
-    public String getLanguage() {
-        return language;
+    public String getLangue() {
+        return langue;
     }
 
     private void setLanguage() {
-        language = LanguageType.getLanguage().get(this.languageId);
+        langue = LanguageType.getLanguage().get(this.languageId);
     }
 
-    public String getDefinition() {
-        return definition;
+    public String[] getResolution_list() {
+        return resolution_list;
     }
 
     private void setDefinition() {
-        this.definition = Definiton.getDefiniton().get(this.definitionCode);
+        this.resolution_list = new String[]{Definiton.getDefiniton().get(this.definitionCode)};
     }
 
-    public ProgramSeries()
+    public ProgramSeriesTencent()
     {
         super();
     }
 
-    public ProgramSeries(Long id, String programSeriesName, String status)
+    public ProgramSeriesTencent(Long id, String title, String status)
     {
         super();
         this.id = id;
-        this.programSeriesName = programSeriesName;
+        this.title = title;
         this.status = status;
     }
-
+    
     public Long getId()
     {
         return id;
     }
-
+    
     public void setId(Long id)
     {
         this.id = id;
     }
-
-    public String getProgramSeriesName()
+    
+    public String getTitle()
     {
-        return programSeriesName;
+        return title;
     }
-
-    public void setProgramSeriesName(String programSeriesName)
+    
+    public void setTitle(String title)
     {
-        this.programSeriesName = programSeriesName;
+        this.title = title;
     }
-
+    
     public String getStatus()
     {
         return status;
     }
-
+    
     public void setStatus(String status)
     {
         this.status = status;
     }
-
+    
     public String getProgramPinyin()
     {
         return programPinyin;
     }
-
+    
     public void setProgramPinyin(String programPinyin)
     {
         this.programPinyin = programPinyin;
     }
-
+    
     public String getProgramSeriesAlias()
     {
         return programSeriesAlias;
     }
-
+    
     public void setProgramSeriesAlias(String programSeriesAlias)
     {
         this.programSeriesAlias = programSeriesAlias;
     }
-
-    public String getProgramSeriesEnName()
+    
+    public String getTitle_en()
     {
-        return programSeriesEnName;
+        return title_en;
     }
-
-    public void setProgramSeriesEnName(String programSeriesEnName)
+    
+    public void setTitle_en(String title_en)
     {
-        this.programSeriesEnName = programSeriesEnName;
+        this.title_en = title_en;
     }
-
-    public String getPoster()
+    
+    public String getNew_pic_hz()
     {
-        return poster;
+        return new_pic_hz;
     }
-
-    public void setPoster(String poster)
+    
+    public void setNew_pic_hz(String new_pic_hz)
     {
-        this.poster = poster;
+        this.new_pic_hz = new_pic_hz;
     }
-
+    
     public String getSmallPosterAddr()
     {
         return smallPosterAddr;
     }
-
+    
     public void setSmallPosterAddr(String smallPosterAddr)
     {
         this.smallPosterAddr = smallPosterAddr;
     }
-
+    
     public String getBigPosterAddr()
     {
         return bigPosterAddr;
     }
-
+    
     public void setBigPosterAddr(String bigPosterAddr)
     {
         this.bigPosterAddr = bigPosterAddr;
     }
-
-    public String getProgramSeriesDesc()
+    
+    public String getDescription()
     {
-        return programSeriesDesc;
+        return description;
     }
-
-    public void setProgramSeriesDesc(String programSeriesDesc)
+    
+    public void setDescription(String description)
     {
-        this.programSeriesDesc = programSeriesDesc;
+        this.description = description;
     }
-
-    public Integer getProgramTypeId()
+    
+    public Integer getType()
     {
-        return programTypeId;
+        return type;
     }
-
-    public void setProgramTypeId(Integer programTypeId)
+    
+    public void setType(Integer type)
     {
-        this.programTypeId = programTypeId;
+        this.type = type;
     }
-
+    
     public String getProgramClass()
     {
         return programClass;
     }
-
+    
     public void setProgramClass(String programClass)
     {
         this.programClass = programClass;
     }
-
+    
     public Integer getProgramCount()
     {
         return programCount;
     }
-
+    
     public void setProgramCount(Integer programCount)
     {
         this.programCount = programCount;
     }
-
+    
     public Integer getProgramTotalCount()
     {
         return programTotalCount;
     }
-
+    
     public void setProgramTotalCount(Integer programTotalCount)
     {
         this.programTotalCount = programTotalCount;
     }
-
+    
     public String getProgramContentType()
     {
         return programContentType;
     }
-
+    
     public void setProgramContentType(String programContentType)
     {
         this.programContentType = programContentType;
     }
-
-    public String getTag()
+    
+    public String getTagArray()
     {
-        return tag;
+        return tagArray;
     }
-
-    public void setTag(String tag)
+    
+    public void setTagArray(String tagArray)
     {
-        this.tag = tag;
+        this.tagArray = tagArray;
     }
-
+    
     public String getDefinitionCode()
     {
         return definitionCode;
     }
-
+    
     public void setDefinitionCode(String definitionCode)
     {
         this.definitionCode = definitionCode;
     }
-
+    
     public String getDirector()
     {
         return director;
     }
-
+    
     public void setDirector(String director)
     {
         this.director = director;
     }
-
+    
     public String getScriptWriter()
     {
         return scriptWriter;
     }
-
+    
     public void setScriptWriter(String scriptWriter)
     {
         this.scriptWriter = scriptWriter;
     }
-
+    
     public String getLeadingRole()
     {
         return leadingRole;
     }
-
+    
     public void setLeadingRole(String leadingRole)
     {
         this.leadingRole = leadingRole;
     }
-
+    
     public String getLeadingRolePinyin()
     {
         return leadingRolePinyin;
     }
-
+    
     public void setLeadingRolePinyin(String leadingRolePinyin)
     {
         this.leadingRolePinyin = leadingRolePinyin;
     }
-
-    public String getYears()
+    
+    public String getYear()
     {
-        return years;
+        return year;
     }
-
-    public void setYears(String years)
+    
+    public void setYear(String year)
     {
-        this.years = years;
+        this.year = year;
     }
-
+    
     public Integer getLanguageId()
     {
         return languageId;
     }
-
+    
     public void setLanguageId(Integer languageId)
     {
         this.languageId = languageId;
     }
-
+    
     public String getCompetition()
     {
         return competition;
     }
-
+    
     public void setCompetition(String competition)
     {
         this.competition = competition;
     }
-
+    
     public String getTargetAudience()
     {
         return targetAudience;
     }
-
+    
     public void setTargetAudience(String targetAudience)
     {
         this.targetAudience = targetAudience;
     }
-
+    
     public Date getPremiereDate()
     {
         return premiereDate;
     }
-
+    
     public void setPremiereDate(Date premiereDate)
     {
         this.premiereDate = premiereDate;
     }
-
+    
     public Date getPublishDate()
     {
         return publishDate;
     }
-
+    
     public void setPublishDate(Date publishDate)
     {
         this.publishDate = publishDate;
     }
-
+    
     public String getPremiereChannel()
     {
         return premiereChannel;
     }
-
+    
     public void setPremiereChannel(String premiereChannel)
     {
         this.premiereChannel = premiereChannel;
     }
-
+    
     public String getSyncLiveChannel()
     {
         return syncLiveChannel;
     }
-
+    
     public void setSyncLiveChannel(String syncLiveChannel)
     {
         this.syncLiveChannel = syncLiveChannel;
     }
-
+    
     public String getSortType()
     {
         return sortType;
     }
-
+    
     public void setSortType(String sortType)
     {
         this.sortType = sortType;
     }
-
+    
     public String getPlaySort()
     {
         return playSort;
     }
-
+    
     public void setPlaySort(String playSort)
     {
         this.playSort = playSort;
     }
-
+    
     public Date getStatusTime()
     {
         return statusTime;
     }
-
+    
     public void setStatusTime(Date statusTime)
     {
         this.statusTime = statusTime;
     }
-
-    public Date getLastModifyDate()
+    
+    public Date getModify_time()
     {
-        return lastModifyDate;
+        return modify_time;
     }
-
-    public void setLastModifyDate(Date lastModifyDate)
+    
+    public void setModify_time(Date modify_time)
     {
-        this.lastModifyDate = lastModifyDate;
+        this.modify_time = modify_time;
     }
-
-    public Date getCreateDate()
+    
+    public Date getCreate_time()
     {
-        return createDate;
+        return create_time;
     }
-
-    public void setCreateDate(Date createDate)
+    
+    public void setCreate_time(Date create_time)
     {
-        this.createDate = createDate;
+        this.create_time = create_time;
     }
-
+    
     public Integer getIs3D()
     {
         return is3D;
     }
-
+    
     public void setIs3D(Integer is3d)
     {
         is3D = is3d;
     }
-
+    
     public Integer getTimeLength()
     {
         return timeLength;
     }
-
+    
     public void setTimeLength(Integer timeLength)
     {
         this.timeLength = timeLength;
     }
-
+    
     public Integer getIsCustomer()
     {
         return isCustomer;
     }
-
+    
     public void setIsCustomer(Integer isCustomer)
     {
         this.isCustomer = isCustomer;
     }
-
+    
     public Integer getStarRating()
     {
         return starRating;
     }
-
+    
     public void setStarRating(Integer starRating)
     {
         this.starRating = starRating;
     }
-
+    
     public String getMaskDescription()
     {
         return maskDescription;
     }
-
+    
     public void setMaskDescription(String maskDescription)
     {
         this.maskDescription = maskDescription;
     }
-
+    
     public String getDataProvider()
     {
         return dataProvider;
     }
-
+    
     public void setDataProvider(String dataProvider)
     {
         this.dataProvider = dataProvider;
     }
-
-    public String getOutSourceId()
+    
+    public String getCover_id()
     {
-        return outSourceId;
+        return cover_id;
     }
-
-    public void setOutSourceId(String outSourceId)
+    
+    public void setCover_id(String cover_id)
     {
-        this.outSourceId = outSourceId;
+        this.cover_id = cover_id;
     }
-
+    
     public String getZone()
     {
         return zone;
     }
-
+    
     public void setZone(String zone)
     {
         this.zone = zone;
     }
-
+    
     public String getCpCode()
     {
         return cpCode;
     }
-
+    
     public void setCpCode(String cpCode)
     {
         this.cpCode = cpCode;
     }
-
+    
     public Date getCopyrightStartDate()
     {
         return copyrightStartDate;
     }
-
+    
     public void setCopyrightStartDate(Date copyrightStartDate)
     {
         this.copyrightStartDate = copyrightStartDate;
     }
-
+    
     public Date getCopyrightEndDate()
     {
         return copyrightEndDate;
     }
-
+    
     public void setCopyrightEndDate(Date copyrightEndDate)
     {
         this.copyrightEndDate = copyrightEndDate;
     }
-
+    
     public Integer getCopyrightId()
     {
         return copyrightId;
     }
-
+    
     public void setCopyrightId(Integer copyrightId)
     {
         this.copyrightId = copyrightId;
     }
-
+    
     public String getPpvCode()
     {
         return ppvCode;
     }
-
+    
     public void setPpvCode(String ppvCode)
     {
         this.ppvCode = ppvCode;
     }
-
+    
     public String getPublishPlatformIds()
     {
         return publishPlatformIds;
     }
-
+    
     public void setPublishPlatformIds(String publishPlatformIds)
     {
         this.publishPlatformIds = publishPlatformIds;
     }
-
+    
     public String getFinishPlatformIds()
     {
         return finishPlatformIds;
     }
-
+    
     public void setFinishPlatformIds(String finishPlatformIds)
     {
         this.finishPlatformIds = finishPlatformIds;
     }
-
+    
     public String getPublishPlatformNames()
     {
         return publishPlatformNames;
     }
-
+    
     public void setPublishPlatformNames(String publishPlatformNames)
     {
         this.publishPlatformNames = publishPlatformNames;
     }
-
+    
     public Integer getCrClassId()
     {
         return crClassId;
     }
-
+    
     public void setCrClassId(Integer crClassId)
     {
         this.crClassId = crClassId;
     }
-
+    
     public Long getFilmCpId()
     {
         return filmCpId;
     }
-
+    
     public void setFilmCpId(Long filmCpId)
     {
         this.filmCpId = filmCpId;
     }
-
+    
     public String getDelReason()
     {
         return delReason;
     }
-
+    
     public void setDelReason(String delReason)
     {
         this.delReason = delReason;
     }
-
+    
     public BigDecimal getManualScore()
     {
         return manualScore;
     }
-
+    
     public void setManualScore(BigDecimal manualScore)
     {
         this.manualScore = manualScore;
     }
-
+    
     public Long getManualPlayTimes()
     {
         return manualPlayTimes;
     }
-
+    
     public void setManualPlayTimes(Long manualPlayTimes)
     {
         this.manualPlayTimes = manualPlayTimes;
     }
-
+    
     public Integer getIsCdn()
     {
         return isCdn;
     }
-
+    
     public void setIsCdn(Integer isCdn)
     {
         this.isCdn = isCdn;
     }
-
+    
     public String getAuditDesc()
     {
         return auditDesc;
     }
-
+    
     public void setAuditDesc(String auditDesc)
     {
         this.auditDesc = auditDesc;
     }
-
+    
     public String getReOnReason()
     {
         return reOnReason;
     }
-
+    
     public void setReOnReason(String reOnReason)
     {
         this.reOnReason = reOnReason;
     }
-
+    
     public Date getFirstOnlineTime()
     {
         return firstOnlineTime;
     }
-
+    
     public void setFirstOnlineTime(Date firstOnlineTime)
     {
         this.firstOnlineTime = firstOnlineTime;
     }
-
+    
     public String getBackReason()
     {
         return backReason;
     }
-
+    
     public void setBackReason(String backReason)
     {
         this.backReason = backReason;
     }
-
+    
     public String getOffReason()
     {
         return offReason;
     }
-
+    
     public void setOffReason(String offReason)
     {
         this.offReason = offReason;
     }
-
+    
     public String getSubCaption()
     {
         return subCaption;
     }
-
+    
     public void setSubCaption(String subCaption)
     {
         this.subCaption = subCaption;
     }
-
+    
     public String getProgramNo()
     {
         return programNo;
     }
-
+    
     public void setProgramNo(String programNo)
     {
         this.programNo = programNo;
     }
-
+    
     public String getProducer()
     {
         return producer;
     }
-
+    
     public void setProducer(String producer)
     {
         this.producer = producer;
     }
-
+    
     public String getCharacter()
     {
         return character;
     }
-
+    
     public void setCharacter(String character)
     {
         this.character = character;
     }
-
+    
     public String getHours()
     {
         return hours;
     }
-
+    
     public void setHours(String hours)
     {
         this.hours = hours;
     }
-
+    
     public String getPublisher()
     {
         return publisher;
     }
-
+    
     public void setPublisher(String publisher)
     {
         this.publisher = publisher;
     }
-
+    
     public String getSubject()
     {
         return subject;
     }
-
+    
     public void setSubject(String subject)
     {
         this.subject = subject;
     }
-
+    
     public String getStyle()
     {
         return style;
     }
-
+    
     public void setStyle(String style)
     {
         this.style = style;
     }
-
+    
     public String getContent()
     {
         return content;
     }
-
+    
     public void setContent(String content)
     {
         this.content = content;
     }
-
+    
     public String getPresenter()
     {
         return presenter;
     }
-
+    
     public void setPresenter(String presenter)
     {
         this.presenter = presenter;
     }
-
+    
     public String getGuests()
     {
         return guests;
     }
-
+    
     public void setGuests(String guests)
     {
         this.guests = guests;
     }
-
+    
     public Date getContentDate()
     {
         return contentDate;
     }
-
+    
     public void setContentDate(Date contentDate)
     {
         this.contentDate = contentDate;
     }
-
+    
     public String getDefaultDefinition()
     {
         return defaultDefinition;
     }
-
+    
     public void setDefaultDefinition(String defaultDefinition)
     {
         this.defaultDefinition = defaultDefinition;
     }
-
+    
     public Integer getIsCpDelete()
     {
         return isCpDelete;
     }
-
+    
     public void setIsCpDelete(Integer isCpDelete)
     {
         this.isCpDelete = isCpDelete;
     }
-
+    
     public Date getThirdModifyTime()
     {
         return thirdModifyTime;
     }
-
+    
     public void setThirdModifyTime(Date thirdModifyTime)
     {
         this.thirdModifyTime = thirdModifyTime;
     }
-
+    
     public Long getCatgSeriesRelId()
     {
         return catgSeriesRelId;
     }
-
+    
     public void setCatgSeriesRelId(Long catgSeriesRelId)
     {
         this.catgSeriesRelId = catgSeriesRelId;
     }
-
+    
     public Long getTaxis()
     {
         return taxis;
     }
-
+    
     public void setTaxis(Long taxis)
     {
         this.taxis = taxis;
     }
-
+    
     public String getUploadPoster()
     {
         return uploadPoster;
     }
-
+    
     public void setUploadPoster(String uploadPoster)
     {
         this.uploadPoster = uploadPoster;
     }
-
+    
     public Long getCpId()
     {
         return cpId;
     }
-
+    
     public void setCpId(Long cpId)
     {
         this.cpId = cpId;
     }
-
+    
     public Integer getIsSetOffline()
     {
         return isSetOffline;
     }
-
+    
     public void setIsSetOffline(Integer isSetOffline)
     {
         this.isSetOffline = isSetOffline;
     }
-
+    
     public Date getOfflineEffectTime()
     {
         return offlineEffectTime;
     }
-
+    
     public void setOfflineEffectTime(Date offlineEffectTime)
     {
         this.offlineEffectTime = offlineEffectTime;
     }
-
+    
     public Integer getWeight()
     {
         return weight;
     }
-
+    
     public void setWeight(Integer weight)
     {
         this.weight = weight;
     }
-
+    
     public String getEpgGroupIds()
     {
         return epgGroupIds;
     }
-
+    
     public void setEpgGroupIds(String epgGroupIds)
     {
         this.epgGroupIds = epgGroupIds;
     }
-
+    
     public String getEpgGroupNames()
     {
         return epgGroupNames;
     }
-
+    
     public void setEpgGroupNames(String epgGroupNames)
     {
         this.epgGroupNames = epgGroupNames;
     }
-
+    
     public String getCatgName()
     {
         return catgName;
     }
-
+    
     public void setCatgName(String catgName)
     {
         this.catgName = catgName;
     }
-
+    
     public String getAwards()
     {
         return awards;
     }
-
+    
     public void setAwards(String awards)
     {
         this.awards = awards;
     }
-
+    
     public void setPublishPlatformIdsForQuery(String publishPlatformIdsForQuery)
     {
         this.publishPlatformIdsForQuery = publishPlatformIdsForQuery;
     }
-
+    
     public String getCatgItemNames()
     {
         return catgItemNames;
     }
-
+    
     public void setCatgItemNames(String catgItemNames)
     {
         this.catgItemNames = catgItemNames;
     }
-
+    
     public String getCatgItemIds()
     {
         return catgItemIds;
     }
-
+    
     public void setCatgItemIds(String catgItemIds)
     {
         this.catgItemIds = catgItemIds;
     }
-
+    
     public String getPpvName()
     {
         return ppvName;
     }
-
+    
     public void setPpvName(String ppvName)
     {
         this.ppvName = ppvName;
     }
-
+    
     public String getPpvPrice()
     {
         return ppvPrice;
     }
-
+    
     public void setPpvPrice(String ppvPrice)
     {
         this.ppvPrice = ppvPrice;
@@ -1371,96 +1411,96 @@ public class ProgramSeries implements Serializable
     {
         return relProgramNames;
     }
-
+    
     public void setRelProgramNames(String relProgramNames)
     {
         this.relProgramNames = relProgramNames;
     }
-
+    
     public String getRelProgramIds()
     {
         return relProgramIds;
     }
-
+    
     public void setRelProgramIds(String relProgramIds)
     {
         this.relProgramIds = relProgramIds;
     }
-
+    
     public String getOldRelProgramIds()
     {
         return oldRelProgramIds;
     }
-
+    
     public void setOldRelProgramIds(String oldRelProgramIds)
     {
         this.oldRelProgramIds = oldRelProgramIds;
     }
-
+    
     public String getPublishPlatformIdsForQuery()
     {
         return publishPlatformIdsForQuery;
     }
-
+    
 
     public String getProgramTypeName()
     {
         return programTypeName;
     }
-
+    
     public void setProgramTypeName(String programTypeName)
     {
         this.programTypeName = programTypeName;
     }
-
+    
     public String getLanguageName()
     {
         return languageName;
     }
-
+    
     public void setLanguageName(String languageName)
     {
         this.languageName = languageName;
     }
-
+    
     public String getYearsName()
     {
         return yearsName;
     }
-
+    
     public void setYearsName(String yearsName)
     {
         this.yearsName = yearsName;
     }
-
+    
     public String getPremiereChannelName()
     {
         return premiereChannelName;
     }
-
+    
     public void setPremiereChannelName(String premiereChannelName)
     {
         this.premiereChannelName = premiereChannelName;
     }
-
+    
     public String getSyncLiveChannelName()
     {
         return syncLiveChannelName;
     }
-
+    
     public void setSyncLiveChannelName(String syncLiveChannelName)
     {
         this.syncLiveChannelName = syncLiveChannelName;
     }
-
+    
     public String getProducerName()
     {
         return producerName;
     }
-
+    
     public void setProducerName(String producerName)
     {
         this.producerName = producerName;
     }
-
+    
 }

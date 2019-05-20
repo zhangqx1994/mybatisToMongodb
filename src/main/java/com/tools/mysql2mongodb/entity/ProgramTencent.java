@@ -10,7 +10,6 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- *
  * <节目实体对象><br />
  * <功能详细描述>
  *
@@ -19,10 +18,9 @@ import java.util.Date;
  * @see [相关类/方法]
  * @since [产品/模块版本]
  */
-@Entity
-@Table(name = "cms_program")
-public class Program implements Serializable
-{
+//@Entity
+//@Table(name = "cms_program")
+public class ProgramTencent implements Serializable {
 
     /**
      *
@@ -35,16 +33,16 @@ public class Program implements Serializable
     private Long programId;
 
     @Column(name = "PROGRAM_NAME")
-    private String programName;
+    private String title;
 
     @Column(name = "ENGLISH_NAME")
-    private String englishName;
+    private String title_en;
 
     @Column(name = "ALIAS")
     private String alias;
 
     @Column(name = "MATERIAL_TYPE_ID")
-    private Integer materialTypeId;
+    private Integer type;
 
     @Column(name = "MATERIAL_CLASS")
     private String materialClass;
@@ -67,8 +65,6 @@ public class Program implements Serializable
     @Column(name = "LANGUAGE_ID")
     private Integer languageId;
 
-    @Transient
-    private String languageName;
 
     @Column(name = "SET_NUMBER")
     private Integer setNumber;
@@ -101,13 +97,13 @@ public class Program implements Serializable
     private Integer resolutionId;
 
     @Column(name = "PROGRAM_LENGTH")
-    private Integer programLength;
+    private Integer duration;
 
     @Column(name = "PREMIERE_CHANNEL")
     private String premiereChannel;
 
     @Column(name = "PREMIERE_DATE")
-    private String premiereDate;
+    private String publish_date;
 
     @Column(name = "SOUND_CHANNEL")
     private String soundChannel;
@@ -116,7 +112,7 @@ public class Program implements Serializable
     private Date statusDate;
 
     @Column(name = "LAST_MODIFY_DATE")
-    private Date lastModifyDate;
+    private Date modify_time;
 
     @Column(name = "UPDATE_USER")
     private String updateUser;
@@ -125,7 +121,7 @@ public class Program implements Serializable
     private Date createDate;
 
     @Column(name = "POSTER")
-    private String poster;
+    private String pic_640_360;
 
     @Column(name = "SORT_NUM")
     private Integer sortNum;
@@ -209,24 +205,62 @@ public class Program implements Serializable
     private String cpDrmType;
 
     @Column(name = "PROGRAM_DESC")
-    private String programDesc;
+    private String desc;
 
     @Column(name = "PRODUCT_ID")
     private Long productId;
 
     @Transient
-    private String materialType;
+    private String type_name;
     @Transient
-    private String language;
+    private String langue;
     @Transient
     private String definition;
     @Transient
+    private String languageName;
+    @Transient
+    private String vid;
+    @Transient
     private String url;
+    @Transient
+    private Integer drm;
+    @Transient
+    private Integer state;
+    @Transient
+    private String pioneer_tag;
 
-    public void convert(){
-        setMaterialType();
-        setLanguage();
-        setDefinition();
+    @Column(name = "IF_PREVIEW")
+    private Integer  is_trailer;
+
+    @Transient
+    private Integer head_time = 0;
+
+    @Transient
+    private Integer tail_time = 0;
+
+    public Integer getIs_trailer() {
+        return is_trailer;
+    }
+
+    public void setIs_trailer(Integer is_trailer) {
+        this.is_trailer = is_trailer;
+    }
+
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState() {
+        switch (this.programStatusId) {
+            case "ONLINE":
+                this.state = 4;
+                break;
+            case "OFFLINE":
+                this.state = 8;
+                break;
+            default:
+                break;
+        }
     }
 
     public String getUrl() {
@@ -237,20 +271,36 @@ public class Program implements Serializable
         this.url = url;
     }
 
-    public String getMaterialType() {
-        return materialType;
+    public String getVid() {
+        return vid;
+    }
+
+    public void setVid() {
+        this.vid = this.programId.toString();
+    }
+
+    public void convert() {
+        setMaterialType();
+        setLanguage();
+        setDefinition();
+        setVid();
+        setState();
+    }
+
+    public String getType_name() {
+        return type_name;
     }
 
     private void setMaterialType() {
-        this.materialType = MaterialType.getMaterialType().get(this.materialTypeId);
+        this.type_name = MaterialType.getMaterialType().get(this.type);
     }
 
-    public String getLanguage() {
-        return language;
+    public String getLangue() {
+        return langue;
     }
 
     private void setLanguage() {
-        this.language = LanguageType.getLanguage().get(this.languageId);
+        this.langue = LanguageType.getLanguage().get(this.languageId);
     }
 
     public String getDefinition() {
@@ -260,6 +310,7 @@ public class Program implements Serializable
     private void setDefinition() {
         this.definition = Definiton.getDefiniton().get(this.definitionCode);
     }
+
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -273,20 +324,20 @@ public class Program implements Serializable
         this.programId = programId;
     }
 
-    public String getProgramName() {
-        return programName;
+    public String getTitle() {
+        return title;
     }
 
-    public void setProgramName(String programName) {
-        this.programName = programName;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getEnglishName() {
-        return englishName;
+    public String getTitle_en() {
+        return title_en;
     }
 
-    public void setEnglishName(String englishName) {
-        this.englishName = englishName;
+    public void setTitle_en(String title_en) {
+        this.title_en = title_en;
     }
 
     public String getAlias() {
@@ -297,12 +348,12 @@ public class Program implements Serializable
         this.alias = alias;
     }
 
-    public Integer getMaterialTypeId() {
-        return materialTypeId;
+    public Integer getType() {
+        return type;
     }
 
-    public void setMaterialTypeId(Integer materialTypeId) {
-        this.materialTypeId = materialTypeId;
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     public String getMaterialClass() {
@@ -449,12 +500,12 @@ public class Program implements Serializable
         this.resolutionId = resolutionId;
     }
 
-    public Integer getProgramLength() {
-        return programLength;
+    public Integer getDuration() {
+        return duration;
     }
 
-    public void setProgramLength(Integer programLength) {
-        this.programLength = programLength;
+    public void setDuration(Integer duration) {
+        this.duration = duration;
     }
 
     public String getPremiereChannel() {
@@ -465,12 +516,12 @@ public class Program implements Serializable
         this.premiereChannel = premiereChannel;
     }
 
-    public String getPremiereDate() {
-        return premiereDate;
+    public String getPublish_date() {
+        return publish_date;
     }
 
-    public void setPremiereDate(String premiereDate) {
-        this.premiereDate = premiereDate;
+    public void setPublish_date(String publish_date) {
+        this.publish_date = publish_date;
     }
 
     public String getSoundChannel() {
@@ -489,12 +540,12 @@ public class Program implements Serializable
         this.statusDate = statusDate;
     }
 
-    public Date getLastModifyDate() {
-        return lastModifyDate;
+    public Date getModify_time() {
+        return modify_time;
     }
 
-    public void setLastModifyDate(Date lastModifyDate) {
-        this.lastModifyDate = lastModifyDate;
+    public void setModify_time(Date modify_time) {
+        this.modify_time = modify_time;
     }
 
     public String getUpdateUser() {
@@ -513,12 +564,12 @@ public class Program implements Serializable
         this.createDate = createDate;
     }
 
-    public String getPoster() {
-        return poster;
+    public String getPic_640_360() {
+        return pic_640_360;
     }
 
-    public void setPoster(String poster) {
-        this.poster = poster;
+    public void setPic_640_360(String pic_640_360) {
+        this.pic_640_360 = pic_640_360;
     }
 
     public Integer getSortNum() {
@@ -737,12 +788,12 @@ public class Program implements Serializable
         this.cpDrmType = cpDrmType;
     }
 
-    public String getProgramDesc() {
-        return programDesc;
+    public String getDesc() {
+        return desc;
     }
 
-    public void setProgramDesc(String programDesc) {
-        this.programDesc = programDesc;
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
     public Long getProductId() {

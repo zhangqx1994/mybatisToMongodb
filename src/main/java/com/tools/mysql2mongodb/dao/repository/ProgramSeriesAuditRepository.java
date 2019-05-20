@@ -6,4 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface ProgramSeriesAuditRepository extends JpaRepository<ProgramSeriesAudit,Long> {
 
     ProgramSeriesAudit findFirstByProgramSeriesIdAndAuditType(Long programSeriesId,Integer type);
+    ProgramSeriesAudit findFirstByProgramSeriesIdAndStatus(Long programSeriesId,Integer status);
 }

@@ -5,11 +5,10 @@
 
     <groupId>com.newtv.adott</groupId>
     <artifactId>mysql-mongodb</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <packaging>jar</packaging>
 
     <name>mysql-mongodb</name>
-    <description>mysql-mongodb</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
